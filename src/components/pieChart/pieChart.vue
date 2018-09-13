@@ -2,7 +2,7 @@
     <section :class="classes" :style="styles">
         <div :class="pieClasses" ref="pieChart" :style="{width:chartBox[0],height:chartBox[1]}"></div>
         <ul :class="[prefixCls + '-legend']" ref="text" :style="{width:itemBox[0],height:itemBox[1]}" v-if="showLegend">
-            <li v-for="(item,index) in itemData" :class="[prefixCls + '-legend-li']" :style="liStyle">
+            <li @click ='clickLegendItem(item)' v-for="(item,index) in itemData" :class="[prefixCls + '-legend-li']" :style="liStyle">
                 <div :class="iconClasses" :style="{backgroundColor:colors[index],marginTop:marginTop}"></div>
                 <div :class="[prefixCls + '-legend-name']">
                     <div v-html="item.name" :style="{color:tColor}"></div>
@@ -195,6 +195,15 @@ export default {
                     callBack: null
                 };
             }
+        },
+        // 图例的点击事件
+        legendEvent:{
+            type:Object,
+            default(){
+                return{
+                    callBack:null
+                }
+            }
         }
     },
     data() {
@@ -268,6 +277,9 @@ export default {
             const liHeight = height / this.itemData.length;
             this.liStyle.height = `${liHeight}px`;
             this.liStyle.lineHeight = `${liHeight}px`;
+            if(this.legendEvent.callBack){
+                this.liStyle.cursor='pointer'
+            }
             this.marginTop = `${(liHeight - 14) / 2}px`;
             setTimeout(() => {
                 this.drawChart();
@@ -287,6 +299,9 @@ export default {
         }
     },
     methods: {
+        clickLegendItem(param){
+             this.legendEvent.callBack(param)
+        },
         drawChart() {
             this.sum = 0;
             this.itemData.forEach((item, index) => {

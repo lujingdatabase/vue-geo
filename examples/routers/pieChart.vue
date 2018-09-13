@@ -1,7 +1,7 @@
 <template>
     <div>
         <span>饼形图</span>
-        <pieChart text="经济" :height="200" :width="530" :colors="fsPie.colors" :itemData="fsPie.itemData" :selected="false" :kind="'overlayPie'" :radius="[['40%','50%'],['50%','60%'],['60%','70%']]" :percent="true" :hasRatio="true" :startAngle="[90,90,90]" unit="人"></pieChart>
+        <pieChart :legendEvent='legendClickEvent' text="经济" :height="200" :width="530" :colors="fsPie.colors" :itemData="fsPie.itemData" :selected="false" :kind="'overlayPie'" :radius="[['40%','50%'],['50%','60%'],['60%','70%']]" :percent="true" :hasRatio="true" :startAngle="[90,90,90]" unit="人"></pieChart>
         <pieChart :type="'h'" :height="200" :width="230" :colors="fsPie.colors" :itemData="fsPie.itemData" :selected="false" :radius='[25, 35]' unit="人" :hasRatio="true" :qty="true" :text="'总计'" :pieEvent="fsPie.pieEvent"></pieChart>
         <ul class="tabBox">
             <li class="tabName" :class="tabid==item.id?'selected':''" @click="sczzCY(item.id)" v-for="item in tabItem" :key="item.id">{{item.name}}</li>
@@ -92,9 +92,18 @@ export default {
                         value: "28"
                     }
                 ]
+            },
+            legendClickEvent:{
+                callBack:this.legendClick
             }
         };
     },
+    methods:{
+        // 图例点击事件
+        legendClick(param){
+           console.log('param---',param)
+        }
+    }
 };
 </script>
 <style lang="less">
